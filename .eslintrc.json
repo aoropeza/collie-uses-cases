@@ -1,0 +1,24 @@
+{
+  "extends": ["airbnb-base", "prettier", "plugin:jest/recommended"],
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/test/**"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always"
+      }
+    ],
+    "new-cap": ["error"]
+  }
+}

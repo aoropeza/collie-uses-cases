@@ -23,14 +23,14 @@ Every collie's project use [debug](https://www.npmjs.com/package/debug) to log u
 ### Usage
 
 ```js
-const usesCases = require("collie-uses-cases");
+const usesCases = require('collie-uses-cases');
 
 const config = {
   uriConnection: {
     protocol: `mongodb+srv`,
-    database: `movies`
+    database: `movies`,
     user: `yyyyy`,
-    password: `xxxxx` ,
+    password: `xxxxx`,
     host: `collieclusteryeahdev-quyy0.mongodb.net`,
     setup: {
       enabled: false,
