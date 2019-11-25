@@ -4,10 +4,10 @@ Collie is a project which follows [Clean architecture](https://blog.cleancoder.c
 
 Layers :
 
-- Application Business Rules(uses cases)
-- Enterprise Business Rules(entities)
-- <span style="color:gray">Frameworks & Drivers</span>
-- <span style="color:gray">Interface Adapters(controllers)</span>
+- **Application Business Rules(uses cases)**
+- **Enterprise Business Rules(entities)**
+- ~~Frameworks & Drivers~~
+- ~~Interface Adapters(controllers)~~
 
 This project covered `Application Business Rules(uses cases)` and `Enterprise Business Rules(entities)` layers from `clean architecture`.
 
@@ -15,9 +15,10 @@ Internally is divided in the two previous layers, there is no reason to create t
 
 ### Debug
 
-Every collie's project use [debug](https://www.npmjs.com/package/debug) to log useful (or not) information in the console.  
-To see information related to all modules: DEBUG=collie:\*  
-To see information related just to this module use: DEBUG=collie:uses-cases
+Every collie's project use [debug](https://www.npmjs.com/package/debug) to log useful (or not) information in the console.
+
+- To see information related to all modules: **DEBUG=collie:\***
+- To see information related just to this module use: **DEBUG=collie:uses-cases**
 
 ### Usage
 
