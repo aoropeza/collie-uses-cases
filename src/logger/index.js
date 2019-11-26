@@ -1,3 +1,5 @@
+'use strict'
+
 const debug = require('debug')
 const bunyan = require('bunyan')
 const bunyanFormat = require('bunyan-format')

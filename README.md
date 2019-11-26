@@ -23,7 +23,7 @@ Every collie's project use [debug](https://www.npmjs.com/package/debug) to log u
 ### Usage
 
 ```js
-const usesCases = require('collie-uses-cases');
+const usesCases = require('collie-uses-cases')
 
 const config = {
   uriConnection: {
@@ -37,7 +37,7 @@ const config = {
       zipWithCollections: `https://www.aws.s3/file.zip`
     }
   }
-};
+}
 
 // Bulk Operations: Any parent or child not send will be remove from database
 usesCases(config)
@@ -49,11 +49,11 @@ usesCases(config)
       filterActiveMovies,
       filterMoviesInfo,
       filterAddress
-    } = instance;
+    } = instance
 
     filterAddress(``, ``, ``).then(results => {
-      console.log(results);
-    });
+      console.log(results)
+    })
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error(err))
 ```

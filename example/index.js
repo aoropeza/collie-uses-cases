@@ -16,9 +16,15 @@ const config = {
 
 // Bulk Operations: Any parent or child not send will be remove from database
 usesCases(config)
-  .then(() => {
+  .then(({ Brand }) => {
     console.log('----> Uses cases gotten correctly')
-    process.exit(0)
+
+    const instance = new Brand({ id: '1' })
+    instance.save(err => {
+      console.log('----> Saving')
+      console.error(err)
+      process.exit(0)
+    })
   })
   .catch(err => {
     console.log('----> Error')

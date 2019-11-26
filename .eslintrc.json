@@ -19,6 +19,7 @@
         "newlines-between": "always"
       }
     ],
-    "new-cap": ["error"]
+    "new-cap": ["error"],
+    "strict": "off"
   }
 }
