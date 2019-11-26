@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/aoropeza/collie-uses-cases#readme",
   "dependencies": {
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
     "debug": "^4.1.1",
     "mongoose": "^5.7.12"
   },
