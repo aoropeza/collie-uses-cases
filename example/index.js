@@ -19,7 +19,10 @@ usesCases(config)
   .then(({ Brand }) => {
     console.log('----> Uses cases gotten correctly')
 
-    const instance = new Brand({ id: '1' })
+    const instance = new Brand({
+      name: 'Cinepolis2',
+      logo: 'https://www.cinepolis.com/logo.png'
+    })
     instance.save(err => {
       console.log('----> Saving')
       console.error(err)
