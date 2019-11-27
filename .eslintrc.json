@@ -19,6 +19,7 @@
         "newlines-between": "always"
       }
     ],
+    "no-underscore-dangle": "off",
     "new-cap": ["error"],
     "strict": "off"
   }

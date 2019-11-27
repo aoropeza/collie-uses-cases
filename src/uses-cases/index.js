@@ -1,9 +1,10 @@
 'use strict'
 
-const { Brand } = require('../entities')
+const { Brand, Location } = require('../entities')
 
 module.exports = {
   Brand,
+  Location,
   addOrUpdateSource: '11',
   bulkBrandWithLocation: '11',
   bulkMovieWithSchedules: '11',

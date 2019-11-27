@@ -1,7 +1,7 @@
 'use strict'
 
-const logger = require('./logger')('collie:uses-cases')
-const db = require('./db')
+const logger = require('./lib/logger')('collie:uses-cases')
+const db = require('./lib/db')
 const usesCases = require('./uses-cases')
 
 module.exports = async config => {

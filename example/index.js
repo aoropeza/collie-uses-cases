@@ -16,18 +16,29 @@ const config = {
 
 // Bulk Operations: Any parent or child not send will be remove from database
 usesCases(config)
-  .then(({ Brand }) => {
+  .then(({ Brand, Location }) => {
     console.log('----> Uses cases gotten correctly')
 
-    const instance = new Brand({
+    const brand = new Brand({
       name: 'Cinepolis2',
       logo: 'https://www.cinepolis.com/logo.png'
     })
-    instance.save(err => {
-      console.log('----> Saving')
-      console.error(err)
-      process.exit(0)
+
+    const location = new Location({
+      name: 'Plaze central',
+      latitude: 19.4574873,
+      longitude: 19.4574873,
+      address: 'Esquina calle norte 13 número 56'
     })
+
+    return brand.save().then(() => {
+      location.brand = brand._id
+      return location.save()
+    })
+  })
+  .then(() => {
+    console.log('----- Collection saved')
+    process.exit(0)
   })
   .catch(err => {
     console.log('----> Error')
