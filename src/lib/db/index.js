@@ -9,7 +9,11 @@ const db = config => {
   logger.info(`Connecting to: ${mongoUrl}`)
   return mongoose.connect(
     mongoUrl,
-    { useNewUrlParser: true, useUnifiedTopology: true },
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    },
     err => {
       if (err) {
         logger.error(err)

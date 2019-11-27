@@ -16,32 +16,36 @@ const config = {
 
 // Bulk Operations: Any parent or child not send will be remove from database
 usesCases(config)
-  .then(({ Brand, Location }) => {
-    console.log('----> Uses cases gotten correctly')
+  .then(({ bulkLocations }) => {
+    console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
-    const brand = new Brand({
-      name: 'Cinepolis2',
-      logo: 'https://www.cinepolis.com/logo.png'
-    })
-
-    const location = new Location({
-      name: 'Plaze central',
-      latitude: 19.4574873,
-      longitude: 19.4574873,
-      address: 'Esquina calle norte 13 número 56'
-    })
-
-    return brand.save().then(() => {
-      location.brand = brand._id
-      return location.save()
+    return bulkLocations({
+      brand: {
+        name: 'Cinepolis2',
+        logo: 'https://www.cinepolis.com/logo2.png'
+      },
+      locations: [
+        {
+          name: 'Plaza central',
+          latitude: 19.4574871,
+          longitude: 19.4574872,
+          address: 'Esquina calle norte 13 número 56'
+        },
+        {
+          name: 'Plaza sur',
+          latitude: 19.4574875,
+          longitude: 19.4574875,
+          address: 'Esquina calle sur 33 número 34'
+        }
+      ]
     })
   })
   .then(() => {
-    console.log('----- Collection saved')
+    console.log('EXAMPLE: -----> Uses cases executed correctly')
     process.exit(0)
   })
   .catch(err => {
-    console.log('----> Error')
+    console.log('EXAMPLE: ----> Error')
     console.error(err)
     process.exit(1)
   })

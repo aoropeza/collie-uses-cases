@@ -39,13 +39,16 @@ const config = {
   }
 }
 
-// Bulk Operations: Any parent or child not send will be remove from database
+// Bulk Operations: Any child not send will be remove from database
+// Also bulk operation first try to update fallback will be insert a new object
 usesCases(config)
   .then(instance => {
     const {
       addOrUpdateSource,
-      bulkBrandWithLocation,
-      bulkMovieWithSchedules,
+      bulkBrands,
+      bulkLocations,
+      bulkMovies,
+      bulkSchedules,
       filterActiveMovies,
       filterMoviesInfo,
       filterAddress

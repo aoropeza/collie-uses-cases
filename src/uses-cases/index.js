@@ -1,13 +1,13 @@
 'use strict'
 
-const { Brand, Location } = require('../entities')
+const { bulkLocations } = require('./bulkLocations')
 
 module.exports = {
-  Brand,
-  Location,
   addOrUpdateSource: '11',
-  bulkBrandWithLocation: '11',
-  bulkMovieWithSchedules: '11',
+  bulkBrands: '11',
+  bulkLocations,
+  bulkMovies: '11',
+  bulkSchedules: '11',
   filterActiveMovies: '11',
   filterMoviesInfo: '11',
   filterAddress: '11'
