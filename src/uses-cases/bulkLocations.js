@@ -1,45 +1,72 @@
 'use strict'
 
-const { Brand, Location } = require('../entities')
-const logger = require('../lib/logger')(
-  'collie:uses-cases:bulkBrandWithLocations'
-)
+const crypto = require('crypto')
 
-const optionsFindOneOrUpdate = {
+const { Brand, Location } = require('../entities')
+const logger = require('../lib/logger')('collie:uses-cases:bulkLocations')
+
+const insertOrUpdate = {
+  setDefaultsOnInsert: true,
   upsert: true,
   new: true,
   runValidators: true
 }
 
-const bulkLocations = async ({ brand, locations }) => {
+const bulkLocations = async ({ brand, locations: locationsArg }) => {
   try {
     const newUpdatedBrand = await Brand.findOneAndUpdate(
       { name: brand.name },
       brand,
-      optionsFindOneOrUpdate
+      insertOrUpdate
     )
 
-    const itemsWillRemove = await Location.remove({
-      $or: [
-        { latitude: { $nin: locations.map(location => location.latitude) } },
-        { longitudes: { $nin: locations.map(location => location.longitude) } }
+    const locations = locationsArg.map(item => {
+      return {
+        ...item,
+        brand: newUpdatedBrand._id,
+        computedUnique: crypto
+          .createHash('md5')
+          .update(
+            `${newUpdatedBrand._id}${item.name}${item.latitude}${item.longitude}`
+          )
+          .digest('hex')
+      }
+    })
+
+    const locationsWillRemove = await Location.remove({
+      $and: [
+        {
+          computedUnique: {
+            $nin: locations.map(location => location.computedUnique)
+          }
+        },
+        {
+          brand: newUpdatedBrand._id
+        }
       ]
     })
-    logger.info(`itemsWillRemove: ${itemsWillRemove.deletedCount}`)
+    logger.info(`locationsWillRemove: ${locationsWillRemove.deletedCount}`)
 
-    const saveLocation = async newLocation => {
+    const saveLocation = async item => {
       await Location.findOneAndUpdate(
-        { latitude: newLocation.latitude, longitude: newLocation.longitude },
-        { ...newLocation, brand: newUpdatedBrand._id },
-        optionsFindOneOrUpdate
+        {
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude
+        },
+        {
+          ...item
+        },
+        insertOrUpdate
       )
     }
 
-    const locationPromises = locations.map(location => saveLocation(location))
+    const locationPromises = locations.map(item => saveLocation(item))
+    logger.info(`locations to save or update: ${locationPromises.length}`)
 
     await Promise.all(locationPromises)
 
-    logger.info('bulkBrandWithLocations ended correctly')
+    logger.info('Ended correctly')
   } catch (error) {
     logger.error(error)
     throw new Error(error)

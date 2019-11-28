@@ -2,25 +2,21 @@
 
 const { Schema } = require('mongoose')
 
-const Location = Schema({
-  brand: {
+const Schedule = Schema({
+  movie: {
     required: true,
     type: Schema.Types.ObjectId,
-    ref: 'Brand'
+    ref: 'Movie'
   },
-  name: {
+  startTime: {
     required: true,
-    type: String
+    type: Date
   },
-  latitude: {
-    required: true,
-    type: Number
-  },
-  longitude: {
+  duration: {
     required: true,
     type: Number
   },
-  address: {
+  typeRoom: {
     required: true,
     type: String
   },
@@ -30,4 +26,4 @@ const Location = Schema({
   }
 })
 
-module.exports = { Location }
+module.exports = { Schedule }

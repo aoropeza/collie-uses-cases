@@ -9,6 +9,9 @@ const buildMakeEntity = model => {
 }
 
 module.exports = {
+  Source: buildMakeEntity('Source'),
   Brand: buildMakeEntity('Brand'),
-  Location: buildMakeEntity('Location')
+  Location: buildMakeEntity('Location'),
+  Movie: buildMakeEntity('Movie'),
+  Schedule: buildMakeEntity('Schedule')
 }

@@ -2,13 +2,9 @@
 
 const { Schema } = require('mongoose')
 
-const Brand = Schema({
+const Movie = Schema({
   name: {
-    required: true,
-    type: String
-  },
-  logo: {
-    required: true,
+    require: true,
     type: String
   },
   computedUnique: {
@@ -17,4 +13,4 @@ const Brand = Schema({
   }
 })
 
-module.exports = { Brand }
+module.exports = { Movie }

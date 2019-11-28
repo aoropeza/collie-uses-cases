@@ -44,7 +44,7 @@ const config = {
 usesCases(config)
   .then(instance => {
     const {
-      addOrUpdateSource,
+      addSource,
       bulkBrands,
       bulkLocations,
       bulkMovies,
