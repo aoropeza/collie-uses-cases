@@ -39,14 +39,14 @@ const bulkMovies = async ({ movies: moviesArg }) => {
     logger.info(`movieWillRemove: ${movieWillRemove.deletedCount}`)
 
     // Removing schedules ref to unused movies
-    const schedulesWithBrandWillRemove = await Schedule.remove({
-      brand: idMoviesWillRemove
+    const schedulesWithMovieWillRemove = await Schedule.remove({
+      movie: idMoviesWillRemove
     })
     logger.info(
-      `locationWithBrandWillRemove: ${schedulesWithBrandWillRemove.deletedCount}`
+      `schedulesWithMovieWillRemove: ${schedulesWithMovieWillRemove.deletedCount}`
     )
 
-    const saveBrand = async item => {
+    const saveMovie = async item => {
       await Movie.findOneAndUpdate(
         {
           name: item.name
@@ -58,7 +58,7 @@ const bulkMovies = async ({ movies: moviesArg }) => {
       )
     }
 
-    const moviePromises = movies.map(item => saveBrand(item))
+    const moviePromises = movies.map(item => saveMovie(item))
     logger.info(`movies to save or update: ${moviePromises.length}`)
 
     await Promise.all(moviePromises)

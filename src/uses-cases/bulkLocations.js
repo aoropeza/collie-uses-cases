@@ -37,7 +37,7 @@ const bulkLocations = async ({ brand, locations: locationsArg }) => {
       $and: [
         {
           computedUnique: {
-            $nin: locations.map(location => location.computedUnique)
+            $nin: locations.map(item => item.computedUnique)
           }
         },
         {

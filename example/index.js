@@ -16,22 +16,36 @@ const config = {
 
 // Bulk Operations: Any parent or child not send will be remove from database
 usesCases(config)
-  .then(({ addSource, bulkBrands, bulkLocations, bulkMovies }) => {
-    console.log('EXAMPLE: ----> Uses cases gotten correctly')
+  .then(
+    ({ addSource, bulkBrands, bulkLocations, bulkMovies, bulkSchedules }) => {
+      console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
-    return Promise.resolve()
-      .then(() =>
-        bulkMovies({
-          movies: [
-            {
-              name: 'Terminator'
-            },
-            {
-              name: 'The current war'
-            }
-          ]
-        })
-      )
+      return Promise.resolve()
+        .then(() =>
+          bulkMovies({
+            movies: [
+              {
+                name: 'Terminator'
+              },
+              {
+                name: 'The current war'
+              }
+            ]
+          })
+        )
+        .then(() =>
+          bulkSchedules({
+            movie: { name: 'Terminator' },
+            schedules: [
+              {
+                startTime: new Date(),
+                duration: 60,
+                typeRoom: 'lux'
+              }
+            ]
+          })
+        )
+      /*
       .then(() =>
         addSource({
           sources: [
@@ -98,7 +112,9 @@ usesCases(config)
           ]
         })
       )
-  })
+      */
+    }
+  )
   .then(() => {
     console.log('EXAMPLE: -----> Uses cases executed correctly')
     process.exit(0)
