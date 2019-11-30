@@ -3,7 +3,9 @@
 const crypto = require('crypto')
 
 const { Movie, Schedule } = require('../entities')
-const logger = require('../lib/logger')('collie:uses-cases:bulkSchedules')
+const logger = require('../frameworks-drivers/logger')(
+  'collie:uses-cases:bulkSchedules'
+)
 
 const insertOrUpdate = {
   setDefaultsOnInsert: true,

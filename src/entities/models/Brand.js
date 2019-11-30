@@ -19,6 +19,10 @@ class Brand {
     return this._computedUnique
   }
 
+  static get persistName() {
+    return 'brand'
+  }
+
   set name(value) {
     this._name = value
   }
@@ -49,4 +53,4 @@ class Brand {
   }
 }
 
-module.exports = Brand
+module.exports = { Brand }

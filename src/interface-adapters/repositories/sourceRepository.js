@@ -4,26 +4,27 @@
 
 const mongoose = require('mongoose')
 
-const { DbStrategy } = require('../strategies/dbStrategy')
-const source = class SourceRepository extends DbStrategy {
+const { Source } = require('../../entities/models')
+const { DbStrategy } = require('../strategies/DbStrategy')
+
+class SourceRepository extends DbStrategy {
   constructor() {
-    const schemaMongoose = mongoose.Schema(schema)
-    const ModelMongoose = mongoose.model(persistName, schemaMongoose)
+    super()
+    this._schema = mongoose.Schema(Source.schema)
+    this._model = mongoose.model(Source.persistName, this._schema)
   }
 
-  async validate(properties, schema, persistName) {
-    const schemaMongoose = mongoose.Schema(schema)
-    const ModelMongoose = mongoose.model(persistName, schemaMongoose)
-    const model = new ModelMongoose(properties)
+  async validate(properties) {
+    const ModelSource = this._model
+    const source = new ModelSource(properties)
 
-    await model.validateSync()
+    await source.validateSync()
   }
 
   async save(entity) {
-    const schemaMongoose = mongoose.Schema(entity.schema)
-    const ModelMongoose = mongoose.model(entity.persistName, schemaMongoose)
+    const ModelSource = this._model
 
-    await new ModelMongoose({
+    await new ModelSource({
       ip: entity.ip,
       clientType: entity.clientType,
       clientName: entity.clientName,

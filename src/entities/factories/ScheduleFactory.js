@@ -5,9 +5,9 @@ const { Schedule } = require('../models')
 const { BaseFactory } = require('./BaseFactory')
 
 class ScheduleFactory extends BaseFactory {
-  async buildEntity() {
+  async createEntity() {
     super.validateEntity(Schedule.schema, Schedule.persistName)
     return new Schedule(this._properties)
   }
 }
-module.exports = ScheduleFactory
+module.exports = { ScheduleFactory }

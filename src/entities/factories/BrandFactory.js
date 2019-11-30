@@ -1,13 +1,13 @@
 'use strict'
 
-const { Source } = require('../models')
+const { Brand } = require('../models')
 
 const { BaseFactory } = require('./BaseFactory')
 
 class BrandFactory extends BaseFactory {
-  async buildEntity() {
-    super.validateEntity(Source.schema, Source.persistName)
-    return new Source(this._properties)
+  async createEntity() {
+    super.validateEntity(Brand.schema, Brand.persistName)
+    return new Brand(this._properties)
   }
 }
-module.exports = BrandFactory
+module.exports = { BrandFactory }

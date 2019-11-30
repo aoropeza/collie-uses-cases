@@ -9,10 +9,13 @@ const validator = {
   }
 }
 
-const sourceFactory = new SourceFactory(validator, {
-  ip: '127.0.0.1',
-  computedUnique: 'asdasdas'
-})
+const sourceFactory = new SourceFactory(
+  {
+    ip: '127.0.0.1',
+    computedUnique: 'asdasdas'
+  },
+  validator
+)
 
 const entity = sourceFactory.buildEntity()
 

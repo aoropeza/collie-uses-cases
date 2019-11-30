@@ -14,6 +14,10 @@ class Movie {
     return this._computedUnique
   }
 
+  static get persistName() {
+    return 'movie'
+  }
+
   set name(value) {
     this._name = value
   }
@@ -36,4 +40,4 @@ class Movie {
   }
 }
 
-module.exports = Movie
+module.exports = { Movie }

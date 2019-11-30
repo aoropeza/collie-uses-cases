@@ -20,7 +20,9 @@ usesCases(config)
     ({ addSource, bulkBrands, bulkLocations, bulkMovies, bulkSchedules }) => {
       console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
-      return Promise.resolve().then(() =>
+      return (
+        Promise.resolve()
+          /*.then(() =>
         addSource({
           sources: [
             {
@@ -29,11 +31,17 @@ usesCases(config)
               clientName: 'chrome',
               clientSo: 'mac',
               clientVersion: '12.2.3'
+            },
+            {
+              ip: '127.0.0.2',
+              clientType: 'mobile',
+              clientName: 'safari',
+              clientSo: 'mac',
+              clientVersion: '11.2.3'
             }
           ]
         })
-      )
-      /*  
+      )  
       .then(() =>
           bulkMovies({
             movies: [
@@ -70,20 +78,23 @@ usesCases(config)
             ]
           })
         )
-      .then(() =>
-        bulkBrands({
-          brands: [
-            {
-              name: 'Cinepolis',
-              logo: 'https://www.cinepolis.com/logo2.png'
-            },
-            {
-              name: 'Cinemex',
-              logo: 'https://www.cinemex.com/logo2.png'
-            }
-          ]
-        })
+        */
+          .then(() =>
+            bulkBrands({
+              brands: [
+                {
+                  name: 'Cinepolis',
+                  logo: 'https://www.cinepolis.com/logo2.png'
+                },
+                {
+                  name: 'Cinemex',
+                  logo: 'https://www.cinemex.com/logo2.png'
+                }
+              ]
+            })
+          )
       )
+      /*
       .then(() =>
         bulkLocations({
           brand: {

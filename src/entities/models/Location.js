@@ -34,6 +34,10 @@ class Location {
     return this._computedUnique
   }
 
+  static get persistName() {
+    return 'location'
+  }
+
   set brand(value) {
     this._brand = value
   }
@@ -62,7 +66,6 @@ class Location {
     return {
       brand: {
         required: true,
-        //type: Schema.Types.ObjectId,
         ref: 'Brand'
       },
       name: {
@@ -89,4 +92,4 @@ class Location {
   }
 }
 
-module.exports = Location
+module.exports = { Location }

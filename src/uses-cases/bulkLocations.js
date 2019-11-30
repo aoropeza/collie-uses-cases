@@ -2,8 +2,10 @@
 
 const crypto = require('crypto')
 
-const { Brand, Location } = require('../entities')
-const logger = require('../lib/logger')('collie:uses-cases:bulkLocations')
+const { Brand, Location } = require('../entities/factories')
+const logger = require('../frameworks-drivers/logger')(
+  'collie:uses-cases:bulkLocations'
+)
 
 const insertOrUpdate = {
   setDefaultsOnInsert: true,

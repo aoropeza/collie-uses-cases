@@ -1,34 +1,41 @@
 'use strict'
 
-const { FactoryEntity } = require('../entities')
+const { SourceFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:addSource'
+  'collie:uses-cases:AddSource'
 )
 
-const addSource = async ({ sources, sourceRepository: dbStrategyInstance }) => {
-  try {
-    const saveSource = async item => {
-      const entity = await FactoryEntity.createEntity(
-        dbStrategyInstance,
-        {
-          ...item,
-          insertTime: new Date()
-        },
-        'Source'
-      )
-      await dbStrategyInstance.save(entity)
+class AddSource {
+  constructor(sources, sourceRepository) {
+    this._sources = sources
+    this._sourceRepository = sourceRepository
+  }
+
+  async exec() {
+    try {
+      const saveSource = async item => {
+        const sourceFactory = new SourceFactory(
+          {
+            ...item,
+            insertTime: new Date()
+          },
+          this._sourceRepository
+        )
+        const entity = await sourceFactory.createEntity()
+        await this._sourceRepository.save(entity)
+      }
+
+      const sourcePromises = this._sources.map(location => saveSource(location))
+      logger.info(`sources to save: ${sourcePromises.length}`)
+
+      await Promise.all(sourcePromises)
+
+      logger.info('Ended correctly')
+    } catch (error) {
+      logger.error(error)
+      throw new Error(error)
     }
-
-    const sourcePromises = sources.map(location => saveSource(location))
-    logger.info(`sources to save: ${sourcePromises.length}`)
-
-    await Promise.all(sourcePromises)
-
-    logger.info('Ended correctly')
-  } catch (error) {
-    logger.error(error)
-    throw new Error(error)
   }
 }
 
-module.exports = { addSource }
+module.exports = { AddSource }

@@ -7,6 +7,12 @@
 class DbStrategy {
   async validate(properties, schema, persistName) {}
 
+  async find(query) {}
+
+  async remove(query) {}
+
+  async findOneAndUpdate(ids, properties, options) {}
+
   async save(entity) {}
 }
 
