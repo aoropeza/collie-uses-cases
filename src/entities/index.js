@@ -1,17 +1,15 @@
 'use strict'
 
-const mongoose = require('mongoose')
-
-const Schemas = require('../lib/schemas')
-
-const buildMakeEntity = model => {
-  return mongoose.model(model, Schemas[model])
-}
+const SourceFactory = require('./factories/SourceFactory')
+const BrandFactory = require('./factories/BrandFactory')
+const LocationFactory = require('./factories/LocationFactory')
+const MovieFactory = require('./factories/MovieFactory')
+const ScheduleFactory = require('./factories/ScheduleFactory')
 
 module.exports = {
-  Source: buildMakeEntity('Source'),
-  Brand: buildMakeEntity('Brand'),
-  Location: buildMakeEntity('Location'),
-  Movie: buildMakeEntity('Movie'),
-  Schedule: buildMakeEntity('Schedule')
+  BrandFactory,
+  LocationFactory,
+  MovieFactory,
+  ScheduleFactory,
+  SourceFactory
 }

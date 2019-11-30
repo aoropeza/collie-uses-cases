@@ -20,8 +20,21 @@ usesCases(config)
     ({ addSource, bulkBrands, bulkLocations, bulkMovies, bulkSchedules }) => {
       console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
-      return Promise.resolve()
-        .then(() =>
+      return Promise.resolve().then(() =>
+        addSource({
+          sources: [
+            {
+              ip: '127.0.0.1',
+              clientType: 'web',
+              clientName: 'chrome',
+              clientSo: 'mac',
+              clientVersion: '12.2.3'
+            }
+          ]
+        })
+      )
+      /*  
+      .then(() =>
           bulkMovies({
             movies: [
               {
@@ -45,21 +58,18 @@ usesCases(config)
             ]
           })
         )
-      /*
-      .then(() =>
-        addSource({
-          sources: [
-            {
-              ip: '127.0.0.1',
-              clientType: 'web',
-              clientName: 'chrome',
-              clientSo: 'mac',
-              clientVersion: '12.2.3'
-            }
-          ]
-        })
-      )
-
+        .then(() =>
+          bulkSchedules({
+            movie: { name: 'The current war' },
+            schedules: [
+              {
+                startTime: new Date(),
+                duration: 120,
+                typeRoom: 'kids'
+              }
+            ]
+          })
+        )
       .then(() =>
         bulkBrands({
           brands: [

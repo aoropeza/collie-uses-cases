@@ -1,15 +1,22 @@
 'use strict'
 
-const { Source } = require('../entities')
-const logger = require('../lib/logger')('collie:uses-cases:addSource')
+const { FactoryEntity } = require('../entities')
+const logger = require('../frameworks-drivers/logger')(
+  'collie:uses-cases:addSource'
+)
 
-const addSource = async ({ sources }) => {
+const addSource = async ({ sources, sourceRepository: dbStrategyInstance }) => {
   try {
     const saveSource = async item => {
-      await new Source({
-        ...item,
-        insertTime: new Date()
-      }).save()
+      const entity = await FactoryEntity.createEntity(
+        dbStrategyInstance,
+        {
+          ...item,
+          insertTime: new Date()
+        },
+        'Source'
+      )
+      await dbStrategyInstance.save(entity)
     }
 
     const sourcePromises = sources.map(location => saveSource(location))
