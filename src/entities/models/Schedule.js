@@ -57,7 +57,6 @@ class Schedule {
     return {
       movie: {
         required: true,
-        //type: Schema.Types.ObjectId,
         ref: 'Movie'
       },
       startTime: {

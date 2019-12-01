@@ -5,9 +5,9 @@
 const mongoose = require('mongoose')
 
 const { Source } = require('../../entities/models')
-const { DbStrategy } = require('../strategies/DbStrategy')
+const { Db } = require('../interfaces/Db')
 
-class SourceRepository extends DbStrategy {
+class DbSourceRepository extends Db {
   constructor() {
     super()
     this._schema = mongoose.Schema(Source.schema)
@@ -35,4 +35,4 @@ class SourceRepository extends DbStrategy {
   }
 }
 
-module.exports = { SourceRepository }
+module.exports = { DbSourceRepository }

@@ -5,10 +5,10 @@ const logger = require('../frameworks-drivers/logger')(
   'collie:uses-cases:AddSource'
 )
 
-class AddSource {
-  constructor(sources, sourceRepository) {
+class AddSources {
+  constructor(sources, dbSourceRepository) {
     this._sources = sources
-    this._sourceRepository = sourceRepository
+    this._dbSourceRepository = dbSourceRepository
   }
 
   async exec() {
@@ -19,10 +19,10 @@ class AddSource {
             ...item,
             insertTime: new Date()
           },
-          this._sourceRepository
+          this._dbSourceRepository
         )
         const entity = await sourceFactory.createEntity()
-        await this._sourceRepository.save(entity)
+        await this._dbSourceRepository.save(entity)
       }
 
       const sourcePromises = this._sources.map(location => saveSource(location))
@@ -38,4 +38,4 @@ class AddSource {
   }
 }
 
-module.exports = { AddSource }
+module.exports = { AddSources }

@@ -4,14 +4,10 @@ Collie is a project which follows [Clean architecture](https://blog.cleancoder.c
 
 Layers :
 
-- **Application Business Rules(uses cases)**
-- **Enterprise Business Rules(entities)**
-- ~~Frameworks & Drivers~~
-- ~~Interface Adapters(controllers)~~
-
-This project covered `Application Business Rules(uses cases)` and `Enterprise Business Rules(entities)` layers from `clean architecture`.
-
-Internally is divided in the two previous layers, there is no reason to create theses layers in a separate repositories.
+- Application Business Rules(uses cases)
+- Enterprise Business Rules(entities)
+- Frameworks & Drivers
+- Interface Adapters(controllers)
 
 ### Debug
 
@@ -41,22 +37,15 @@ const config = {
 
 // Bulk Operations: Any child not send will be remove from database
 // Also bulk operation first try to update fallback will be insert a new object
-usesCases(config)
-  .then(instance => {
-    const {
-      addSource,
-      bulkBrands,
-      bulkLocations,
-      bulkMovies,
-      bulkSchedules,
-      filterActiveMovies,
-      filterMoviesInfo,
-      filterAddress
-    } = instance
+const usesCases = await UsesCases.buildStatic(config)
 
-    filterAddress(``, ``, ``).then(results => {
-      console.log(results)
-    })
-  })
-  .catch(err => console.error(err))
+await usesCases.addSources([
+  {
+    ip: '127.0.0.1',
+    clientType: 'web',
+    clientName: 'chrome',
+    clientSo: 'mac',
+    clientVersion: '12.2.3'
+  }
+])
 ```

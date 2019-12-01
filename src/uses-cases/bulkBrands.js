@@ -1,24 +1,16 @@
 'use strict'
 
-const crypto = require('crypto')
-
-const { BrandFactory, LocationFactory } = require('../entities/factories')
+const { BrandFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
   'collie:uses-cases:BulkBrands'
 )
 
-const insertOrUpdate = {
-  setDefaultsOnInsert: true,
-  upsert: true,
-  new: true,
-  runValidators: true
-}
-
 class BulkBrands {
-  constructor(brands, brandRepository, locationRepository) {
+  constructor(brands, dbBrandRepository, dbLocationRepository, md5Repository) {
     this._brands = brands
-    this._brandRepository = brandRepository
-    this._locationRepository = locationRepository
+    this._dbBrandRepository = dbBrandRepository
+    this._dbLocationRepository = dbLocationRepository
+    this._md5Repository = md5Repository
   }
 
   async exec() {
@@ -26,15 +18,12 @@ class BulkBrands {
       const brands = this._brands.map(item => {
         return {
           ...item,
-          computedUnique: crypto
-            .createHash('md5')
-            .update(`${item.name}`)
-            .digest('hex')
+          computedUnique: this._md5Repository.exec(`${item.name}`)
         }
       })
 
       const idBrandsWillRemove = (
-        await this._brandRepository.find({
+        await this._dbBrandRepository.find({
           computedUnique: {
             $nin: brands.map(item => item.computedUnique)
           }
@@ -42,13 +31,13 @@ class BulkBrands {
       ).map(item => item._id)
 
       // Removing unused brands
-      const brandsWillRemove = await this._brandRepository.remove({
+      const brandsWillRemove = await this._dbBrandRepository.remove({
         _id: idBrandsWillRemove
       })
       logger.info(`brandsWillRemove: ${brandsWillRemove.deletedCount}`)
 
       // Removing location ref to unused brands
-      const locationsWithBrandWillRemove = await this._locationRepository.remove(
+      const locationsWithBrandWillRemove = await this._dbLocationRepository.remove(
         {
           brand: idBrandsWillRemove
         }
@@ -62,16 +51,10 @@ class BulkBrands {
           {
             ...item
           },
-          this._brandRepository
+          this._dbBrandRepository
         )
         const entity = await brandFactory.createEntity()
-        await this._brandRepository.findOneAndUpdate(
-          {
-            name: item.name
-          },
-          entity,
-          insertOrUpdate
-        )
+        await this._dbBrandRepository.insertOrUpdate(entity)
       }
 
       const brandPromises = brands.map(item => saveBrand(item))

@@ -1,78 +1,85 @@
 'use strict'
 
-const crypto = require('crypto')
-
-const { Brand, Location } = require('../entities/factories')
+const { BrandFactory, LocationFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:bulkLocations'
+  'collie:uses-cases:BulkLocations'
 )
 
-const insertOrUpdate = {
-  setDefaultsOnInsert: true,
-  upsert: true,
-  new: true,
-  runValidators: true
-}
+class BulkLocations {
+  constructor(
+    brand,
+    locations,
+    bdBrandRepository,
+    dbLocationRepository,
+    md5Repository
+  ) {
+    this._brand = brand
+    this._locations = locations
+    this._bdBrandRepository = bdBrandRepository
+    this._dbLocationRepository = dbLocationRepository
+    this._md5Repository = md5Repository
+  }
 
-const bulkLocations = async ({ brand, locations: locationsArg }) => {
-  try {
-    const newUpdatedBrand = await Brand.findOneAndUpdate(
-      { name: brand.name },
-      brand,
-      insertOrUpdate
-    )
+  async exec() {
+    try {
+      const brandFactory = new BrandFactory(
+        {
+          ...this._brand,
+          computedUnique: this._md5Repository.exec(`${this._brand.name}`)
+        },
+        this._bdBrandRepository
+      )
+      const entity = await brandFactory.createEntity()
+      const newUpdatedBrand = await this._bdBrandRepository.insertOrUpdate(
+        entity
+      )
 
-    const locations = locationsArg.map(item => {
-      return {
-        ...item,
-        brand: newUpdatedBrand._id,
-        computedUnique: crypto
-          .createHash('md5')
-          .update(
+      const locations = this._locations.map(item => {
+        return {
+          ...item,
+          brand: newUpdatedBrand._id,
+          computedUnique: this._md5Repository.exec(
             `${newUpdatedBrand._id}${item.name}${item.latitude}${item.longitude}`
           )
-          .digest('hex')
-      }
-    })
-
-    const locationsWillRemove = await Location.remove({
-      $and: [
-        {
-          computedUnique: {
-            $nin: locations.map(item => item.computedUnique)
-          }
-        },
-        {
-          brand: newUpdatedBrand._id
         }
-      ]
-    })
-    logger.info(`locationsWillRemove: ${locationsWillRemove.deletedCount}`)
+      })
 
-    const saveLocation = async item => {
-      await Location.findOneAndUpdate(
-        {
-          name: item.name,
-          latitude: item.latitude,
-          longitude: item.longitude
-        },
-        {
-          ...item
-        },
-        insertOrUpdate
-      )
+      const locationsWillRemove = await this._dbLocationRepository.remove({
+        $and: [
+          {
+            computedUnique: {
+              $nin: locations.map(item => item.computedUnique)
+            }
+          },
+          {
+            brand: newUpdatedBrand._id
+          }
+        ]
+      })
+      logger.info(`locationsWillRemove: ${locationsWillRemove.deletedCount}`)
+
+      const saveLocation = async item => {
+        const locationFactory = new LocationFactory(
+          {
+            ...item
+          },
+          this._bdBrandRepository
+        )
+        const entityLocation = await locationFactory.createEntity()
+        await this._dbLocationRepository.insertOrUpdate(entityLocation)
+      }
+
+      const locationPromises = locations.map(item => saveLocation(item))
+      logger.info(`locations to save or update: ${locationPromises.length}`)
+
+      await Promise.all(locationPromises)
+
+      logger.info('Ended correctly')
+    } catch (error) {
+      logger.error(error)
+      throw new Error(error)
     }
-
-    const locationPromises = locations.map(item => saveLocation(item))
-    logger.info(`locations to save or update: ${locationPromises.length}`)
-
-    await Promise.all(locationPromises)
-
-    logger.info('Ended correctly')
-  } catch (error) {
-    logger.error(error)
-    throw new Error(error)
   }
 }
 
-module.exports = { bulkLocations }
+module.exports = { BulkLocations }

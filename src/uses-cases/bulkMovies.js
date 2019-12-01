@@ -1,75 +1,73 @@
 'use strict'
 
-const crypto = require('crypto')
-
-const { Movie, Schedule } = require('../entities')
+const { MovieFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:bulkMovies'
+  'collie:uses-cases:BulkBrands'
 )
 
-const insertOrUpdate = {
-  setDefaultsOnInsert: true,
-  upsert: true,
-  new: true,
-  runValidators: true
-}
+class BulkMovies {
+  constructor(movies, dbMovieRepository, dbScheduleRepository, md5Repository) {
+    this._movies = movies
+    this._dbMovieRepository = dbMovieRepository
+    this._dbScheduleRepository = dbScheduleRepository
+    this._md5Repository = md5Repository
+  }
 
-const bulkMovies = async ({ movies: moviesArg }) => {
-  try {
-    const movies = moviesArg.map(item => {
-      return {
-        ...item,
-        computedUnique: crypto
-          .createHash('md5')
-          .update(`${item.name}`)
-          .digest('hex')
-      }
-    })
-
-    const idMoviesWillRemove = (
-      await Movie.find({
-        computedUnique: {
-          $nin: movies.map(location => location.computedUnique)
+  async exec() {
+    try {
+      const movies = this._movies.map(item => {
+        return {
+          ...item,
+          computedUnique: this._md5Repository.exec(`${item.name}`)
         }
       })
-    ).map(item => item._id)
 
-    // Removing unused movies
-    const movieWillRemove = await Movie.remove({
-      _id: idMoviesWillRemove
-    })
-    logger.info(`movieWillRemove: ${movieWillRemove.deletedCount}`)
+      const idMoviesWillRemove = (
+        await this._dbMovieRepository.find({
+          computedUnique: {
+            $nin: movies.map(item => item.computedUnique)
+          }
+        })
+      ).map(item => item._id)
 
-    // Removing schedules ref to unused movies
-    const schedulesWithMovieWillRemove = await Schedule.remove({
-      movie: idMoviesWillRemove
-    })
-    logger.info(
-      `schedulesWithMovieWillRemove: ${schedulesWithMovieWillRemove.deletedCount}`
-    )
+      // Removing unused movies
+      const moviesWillRemove = await this._dbMovieRepository.remove({
+        _id: idMoviesWillRemove
+      })
+      logger.info(`moviesWillRemove: ${moviesWillRemove.deletedCount}`)
 
-    const saveMovie = async item => {
-      await Movie.findOneAndUpdate(
+      // Removing schedules ref to unused movies
+      const schedulesWithMovieWillRemove = await this._dbScheduleRepository.remove(
         {
-          name: item.name
-        },
-        {
-          ...item
-        },
-        insertOrUpdate
+          movie: idMoviesWillRemove
+        }
       )
+      logger.info(
+        `schedulesWithMovieWillRemove: ${schedulesWithMovieWillRemove.deletedCount}`
+      )
+
+      const saveMovie = async item => {
+        const movieFactory = new MovieFactory(
+          {
+            ...item
+          },
+          this._dbMovieRepository
+        )
+        const entity = await movieFactory.createEntity()
+        await this._dbMovieRepository.insertOrUpdate(entity)
+      }
+
+      const brandPromises = movies.map(item => saveMovie(item))
+      logger.info(`movies to save or update: ${brandPromises.length}`)
+
+      await Promise.all(brandPromises)
+
+      logger.info('Ended correctly')
+    } catch (error) {
+      logger.error(error)
+      throw new Error(error)
     }
-
-    const moviePromises = movies.map(item => saveMovie(item))
-    logger.info(`movies to save or update: ${moviePromises.length}`)
-
-    await Promise.all(moviePromises)
-
-    logger.info('Ended correctly')
-  } catch (error) {
-    logger.error(error)
-    throw new Error(error)
   }
 }
 
-module.exports = { bulkMovies }
+module.exports = { BulkMovies }

@@ -4,16 +4,16 @@
 
 'use strict'
 
-class DbStrategy {
+class Db {
   async validate(properties, schema, persistName) {}
 
   async find(query) {}
 
   async remove(query) {}
 
-  async findOneAndUpdate(ids, properties, options) {}
+  async insertOrUpdate(ids, properties) {}
 
   async save(entity) {}
 }
 
-module.exports = { DbStrategy }
+module.exports = { Db }

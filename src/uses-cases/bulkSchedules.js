@@ -2,74 +2,86 @@
 
 const crypto = require('crypto')
 
-const { Movie, Schedule } = require('../entities')
+const { MovieFactory, ScheduleFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:bulkSchedules'
+  'collie:uses-cases:BulkSchedules'
 )
 
-const insertOrUpdate = {
-  setDefaultsOnInsert: true,
-  upsert: true,
-  new: true,
-  runValidators: true
-}
+class BulkSchedules {
+  constructor(
+    movie,
+    schedules,
+    bdMovieRepository,
+    dbScheduleRepository,
+    md5Repository
+  ) {
+    this._movie = movie
+    this._schedules = schedules
+    this._bdMovieRepository = bdMovieRepository
+    this._dbScheduleRepository = dbScheduleRepository
+    this._md5Repository = md5Repository
+  }
 
-const bulkSchedules = async ({ movie, schedules: schedulesArg }) => {
-  try {
-    const newUpdatedMovie = await Movie.findOneAndUpdate(
-      { name: movie.name },
-      movie,
-      insertOrUpdate
-    )
-
-    const schedules = schedulesArg.map(item => {
-      return {
-        ...item,
-        movie: newUpdatedMovie._id,
-        computedUnique: crypto
-          .createHash('md5')
-          .update(`${newUpdatedMovie._id}${item.startTime}${item.duration}`)
-          .digest('hex')
-      }
-    })
-
-    const schedulesWillRemove = await Schedule.remove({
-      $and: [
+  async exec() {
+    try {
+      const movieFactory = new MovieFactory(
         {
-          computedUnique: {
-            $nin: schedules.map(item => item.computedUnique)
-          }
+          ...this._movie,
+          computedUnique: this._md5Repository.exec(`${this._movie.name}`)
         },
-        {
-          movie: newUpdatedMovie._id
-        }
-      ]
-    })
-    logger.info(`schedulesWillRemove: ${schedulesWillRemove.deletedCount}`)
-
-    const saveSchedule = async item => {
-      await Schedule.findOneAndUpdate(
-        {
-          startTime: item.startTime,
-          duration: item.duration
-        },
-        {
-          ...item
-        },
-        insertOrUpdate
+        this._bdMovieRepository
       )
+      const entity = await movieFactory.createEntity()
+      const newUpdatedMovie = await this._bdMovieRepository.insertOrUpdate(
+        entity
+      )
+
+      const schedules = this._schedules.map(item => {
+        return {
+          ...item,
+          movie: newUpdatedMovie._id,
+          computedUnique: this._md5Repository.exec(
+            `${newUpdatedMovie._id}${item.startTime}${item.duration}`
+          )
+        }
+      })
+
+      const schedulesWillRemove = await this._dbScheduleRepository.remove({
+        $and: [
+          {
+            computedUnique: {
+              $nin: schedules.map(item => item.computedUnique)
+            }
+          },
+          {
+            movie: newUpdatedMovie._id
+          }
+        ]
+      })
+      logger.info(`schedulesWillRemove: ${schedulesWillRemove.deletedCount}`)
+
+      const saveSchedule = async item => {
+        const scheduleFactory = new ScheduleFactory(
+          {
+            ...item
+          },
+          this._dbScheduleRepository
+        )
+        const entitySchedule = await scheduleFactory.createEntity()
+        await this._dbScheduleRepository.insertOrUpdate(entitySchedule)
+      }
+
+      const schedulePromises = schedules.map(item => saveSchedule(item))
+      logger.info(`schedules to save or update: ${schedulePromises.length}`)
+
+      await Promise.all(schedulePromises)
+
+      logger.info('Ended correctly')
+    } catch (error) {
+      logger.error(error)
+      throw new Error(error)
     }
-
-    const schedulePromises = schedules.map(item => saveSchedule(item))
-    logger.info(`schedules to save or update: ${schedulePromises.length}`)
-
-    await Promise.all(schedulePromises)
-
-    logger.info('Ended correctly')
-  } catch (error) {
-    logger.error(error)
-    throw new Error(error)
   }
 }
 
-module.exports = { bulkSchedules }
+module.exports = { BulkSchedules }

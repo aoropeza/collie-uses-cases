@@ -5,9 +5,16 @@
 const mongoose = require('mongoose')
 
 const { Brand } = require('../../entities/models')
-const { DbStrategy } = require('../strategies/DbStrategy')
+const { Db } = require('../interfaces/Db')
 
-class BrandRepository extends DbStrategy {
+const insertOrUpdate = {
+  setDefaultsOnInsert: true,
+  upsert: true,
+  new: true,
+  runValidators: true
+}
+
+class DbBrandRepository extends Db {
   constructor() {
     super()
     this._schema = mongoose.Schema(Brand.schema)
@@ -31,18 +38,20 @@ class BrandRepository extends DbStrategy {
     return ModelBrand.remove(query)
   }
 
-  async findOneAndUpdate(ids, entity, options) {
+  async insertOrUpdate(entity) {
     const ModelBrand = this._model
-    await ModelBrand.findOneAndUpdate(
-      ids,
+    return ModelBrand.findOneAndUpdate(
+      {
+        name: entity.name
+      },
       {
         name: entity.name,
         logo: entity.logo,
         computedUnique: entity.computedUnique
       },
-      options
+      insertOrUpdate
     )
   }
 }
 
-module.exports = { BrandRepository }
+module.exports = { DbBrandRepository }

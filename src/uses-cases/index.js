@@ -1,18 +1,15 @@
 'use strict'
 
-const { bulkLocations } = require('./bulkLocations')
-const { bulkBrands } = require('./bulkBrands')
-const { addSource } = require('./addSource')
-const { bulkMovies } = require('./bulkMovies')
-const { bulkSchedules } = require('./bulkSchedules')
+const { AddSources } = require('./AddSources')
+const { BulkBrands } = require('./BulkBrands')
+const { BulkLocations } = require('./BulkLocations')
+const { BulkMovies } = require('./BulkMovies')
+const { BulkSchedules } = require('./BulkSchedules')
 
 module.exports = {
-  addSource,
-  bulkBrands,
-  bulkLocations,
-  bulkMovies,
-  bulkSchedules,
-  filterActiveMovies: '11',
-  filterMoviesInfo: '11',
-  filterAddress: '11'
+  AddSources,
+  BulkBrands,
+  BulkLocations,
+  BulkMovies,
+  BulkSchedules
 }
