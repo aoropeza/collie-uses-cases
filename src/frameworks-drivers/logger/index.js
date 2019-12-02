@@ -16,11 +16,13 @@ const logger = nameSpace => {
     levelInString: true
   })
 
-  const debugPrint = (msg, level) => dInstance(`%O`, { msg, level })
+  const debugPrint = (msg, level) => dInstance(`${level}: %O`, msg)
 
   return {
     info: msg =>
-      debugEnabled ? debugPrint(msg, 'INFO') : log.info({ info: msg }),
+      debugEnabled
+        ? debugPrint(msg, 'INFO')
+        : log.info({ info: msg, msg: 'dasdas' }),
     debug: msg =>
       debugEnabled ? debugPrint(msg, 'DEBUG') : log.debug({ info: msg }),
     warn: msg =>

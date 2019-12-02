@@ -20,7 +20,7 @@ class DbLocationRepository extends Db {
     super()
     this._schema = mongoose.Schema({
       ...Location.schema,
-      brand: { type: Schema.Types.ObjectId }
+      brand: { ...Location.schema.brand, type: Schema.Types.ObjectId }
     })
     this._model = mongoose.model(Location.persistName, this._schema)
   }
@@ -32,6 +32,11 @@ class DbLocationRepository extends Db {
     await source.validateSync()
   }
 
+  async find(query) {
+    const ModelBrand = this._model
+    return ModelBrand.find(query)
+  }
+
   async remove(query) {
     const ModelLocation = this._model
     return ModelLocation.remove(query)
@@ -41,9 +46,7 @@ class DbLocationRepository extends Db {
     const ModelLocation = this._model
     return ModelLocation.findOneAndUpdate(
       {
-        name: entity.name,
-        latitude: entity.latitude,
-        longitude: entity.longitude
+        computedUnique: entity.computedUnique
       },
       {
         brand: entity.brand,

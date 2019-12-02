@@ -42,7 +42,7 @@ class DbMovieRepository extends Db {
     const ModelMovie = this._model
     return ModelMovie.findOneAndUpdate(
       {
-        name: entity.name
+        computedUnique: entity.computedUnique
       },
       {
         name: entity.name,

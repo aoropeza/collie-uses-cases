@@ -55,15 +55,21 @@ const start = async () => {
       [
         {
           name: 'Plaza central',
-          latitude: 19.4574811,
-          longitude: 19.4574811,
+          latitude: 19.4574861,
+          longitude: 19.4574862,
           address: 'Esquina calle norte 13 número 56'
         },
         {
           name: 'Plaza sur',
-          latitude: 19.4574844,
-          longitude: 19.4574844,
+          latitude: 19.4574862,
+          longitude: 19.4574862,
           address: 'Esquina calle sur 33 número 34'
+        },
+        {
+          name: 'Plaza oriente',
+          latitude: 19.4574844,
+          longitude: 19.457444,
+          address: 'Esquina calle oriente 66 número 34'
         }
       ]
     )
@@ -91,21 +97,48 @@ const start = async () => {
         name: 'The current war'
       }
     ])
-    await usesCases.bulkSchedules({ name: 'Terminator' }, [
-      {
-        startTime: new Date(),
-        duration: 60,
-        typeRoom: 'lux'
-      }
-    ])
 
-    await usesCases.bulkSchedules({ name: 'The current war' }, [
+    await usesCases.bulkSchedules(
       {
-        startTime: new Date(),
-        duration: 120,
-        typeRoom: 'kids'
-      }
-    ])
+        name: 'Cinemex',
+        logo: 'https://www.cinemex.com/logo2.png'
+      },
+      {
+        name: 'Plaza oriente',
+        latitude: 19.4574844,
+        longitude: 19.457444,
+        address: 'Esquina calle oriente 66 número 34'
+      },
+      { name: 'Terminator' },
+      [
+        {
+          startTime: new Date(),
+          duration: 60,
+          typeRoom: 'lux'
+        }
+      ]
+    )
+
+    await usesCases.bulkSchedules(
+      {
+        name: 'Cinepolis',
+        logo: 'https://www.cinepolis.com/logo2.png'
+      },
+      {
+        name: 'Plaza oriente',
+        latitude: 19.4574844,
+        longitude: 19.457444,
+        address: 'Esquina calle oriente 66 número 34'
+      },
+      { name: 'The current war' },
+      [
+        {
+          startTime: new Date(),
+          duration: 120,
+          typeRoom: 'kids'
+        }
+      ]
+    )
 
     console.log('EXAMPLE: -----> Uses cases executed correctly')
 

@@ -15,12 +15,17 @@ class BulkBrands {
 
   async exec() {
     try {
-      const brands = this._brands.map(item => {
-        return {
-          ...item,
-          computedUnique: this._md5Repository.exec(`${item.name}`)
-        }
+      const brandEntityPromises = this._brands.map(item => {
+        const brandFactory = new BrandFactory(
+          {
+            ...item
+          },
+          this._dbBrandRepository,
+          this._md5Repository
+        )
+        return brandFactory.createEntity()
       })
+      const brands = await Promise.all(brandEntityPromises)
 
       const idBrandsWillRemove = (
         await this._dbBrandRepository.find({
@@ -46,18 +51,9 @@ class BulkBrands {
         `locationsWithBrandWillRemove: ${locationsWithBrandWillRemove.deletedCount}`
       )
 
-      const saveBrand = async item => {
-        const brandFactory = new BrandFactory(
-          {
-            ...item
-          },
-          this._dbBrandRepository
-        )
-        const entity = await brandFactory.createEntity()
-        await this._dbBrandRepository.insertOrUpdate(entity)
-      }
-
-      const brandPromises = brands.map(item => saveBrand(item))
+      const brandPromises = brands.map(entity =>
+        this._dbBrandRepository.insertOrUpdate(entity)
+      )
       logger.info(`brands to save or update: ${brandPromises.length}`)
 
       await Promise.all(brandPromises)

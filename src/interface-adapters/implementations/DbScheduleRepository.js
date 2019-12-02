@@ -20,7 +20,8 @@ class DbScheduleRepository extends Db {
     super()
     this._schema = mongoose.Schema({
       ...Schedule.schema,
-      movie: { type: Schema.Types.ObjectId }
+      movie: { ...Schedule.schema.movie, type: Schema.Types.ObjectId },
+      location: { ...Schedule.schema.location, type: Schema.Types.ObjectId }
     })
     this._model = mongoose.model(Schedule.persistName, this._schema)
   }
@@ -41,11 +42,11 @@ class DbScheduleRepository extends Db {
     const ModelSchedule = this._model
     return ModelSchedule.findOneAndUpdate(
       {
-        startTime: entity.startTime,
-        duration: entity.duration
+        computedUnique: entity.computedUnique
       },
       {
         movie: entity.movie,
+        location: entity.location,
         startTime: entity.startTime,
         duration: entity.duration,
         typeRoom: entity.typeRoom,

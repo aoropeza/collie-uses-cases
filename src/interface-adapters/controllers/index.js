@@ -77,13 +77,17 @@ class Controllers {
     // Output
   }
 
-  static async bulkSchedules(movie, schedules) {
+  static async bulkSchedules(brand, location, movie, schedules) {
     // Input
 
     // Treatment
     await new BulkSchedules(
+      brand,
+      location,
       movie,
       schedules,
+      dbBrandRepository,
+      dbLocationRepository,
       dbMovieRepository,
       dbScheduleRepository,
       md5Repository

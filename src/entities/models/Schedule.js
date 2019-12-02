@@ -1,8 +1,16 @@
 'use strict'
 
 class Schedule {
-  constructor({ movie, startTime, duration, typeRoom, computedUnique }) {
+  constructor({
+    movie,
+    location,
+    startTime,
+    duration,
+    typeRoom,
+    computedUnique
+  }) {
     this._movie = movie
+    this._location = location
     this._startTime = startTime
     this._duration = duration
     this._typeRoom = typeRoom
@@ -11,6 +19,10 @@ class Schedule {
 
   get movie() {
     return this._movie
+  }
+
+  get location() {
+    return this._location
   }
 
   get startTime() {
@@ -37,6 +49,10 @@ class Schedule {
     this._movie = value
   }
 
+  set location(value) {
+    this._location = value
+  }
+
   set startTime(value) {
     this._startTime = value
   }
@@ -57,7 +73,11 @@ class Schedule {
     return {
       movie: {
         required: true,
-        ref: 'Movie'
+        ref: 'movie'
+      },
+      location: {
+        required: true,
+        ref: 'location'
       },
       startTime: {
         required: true,

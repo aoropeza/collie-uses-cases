@@ -66,7 +66,7 @@ class Location {
     return {
       brand: {
         required: true,
-        ref: 'Brand'
+        ref: 'brand'
       },
       name: {
         required: true,

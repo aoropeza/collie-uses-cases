@@ -42,7 +42,7 @@ class DbBrandRepository extends Db {
     const ModelBrand = this._model
     return ModelBrand.findOneAndUpdate(
       {
-        name: entity.name
+        computedUnique: entity.computedUnique
       },
       {
         name: entity.name,

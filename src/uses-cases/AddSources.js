@@ -16,13 +16,12 @@ class AddSources {
       const saveSource = async item => {
         const sourceFactory = new SourceFactory(
           {
-            ...item,
-            insertTime: new Date()
+            ...item
           },
           this._dbSourceRepository
         )
         const entity = await sourceFactory.createEntity()
-        await this._dbSourceRepository.save(entity)
+        return this._dbSourceRepository.save(entity)
       }
 
       const sourcePromises = this._sources.map(location => saveSource(location))

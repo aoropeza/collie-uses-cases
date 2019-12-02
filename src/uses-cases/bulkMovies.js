@@ -2,7 +2,7 @@
 
 const { MovieFactory } = require('../entities/factories')
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:BulkBrands'
+  'collie:uses-cases:BulkMovies'
 )
 
 class BulkMovies {
@@ -15,12 +15,17 @@ class BulkMovies {
 
   async exec() {
     try {
-      const movies = this._movies.map(item => {
-        return {
-          ...item,
-          computedUnique: this._md5Repository.exec(`${item.name}`)
-        }
+      const movieEntityPromises = this._movies.map(item => {
+        const movieFactory = new MovieFactory(
+          {
+            ...item
+          },
+          this._dbMovieRepository,
+          this._md5Repository
+        )
+        return movieFactory.createEntity()
       })
+      const movies = await Promise.all(movieEntityPromises)
 
       const idMoviesWillRemove = (
         await this._dbMovieRepository.find({
@@ -46,18 +51,9 @@ class BulkMovies {
         `schedulesWithMovieWillRemove: ${schedulesWithMovieWillRemove.deletedCount}`
       )
 
-      const saveMovie = async item => {
-        const movieFactory = new MovieFactory(
-          {
-            ...item
-          },
-          this._dbMovieRepository
-        )
-        const entity = await movieFactory.createEntity()
-        await this._dbMovieRepository.insertOrUpdate(entity)
-      }
-
-      const brandPromises = movies.map(item => saveMovie(item))
+      const brandPromises = movies.map(entity =>
+        this._dbMovieRepository.insertOrUpdate(entity)
+      )
       logger.info(`movies to save or update: ${brandPromises.length}`)
 
       await Promise.all(brandPromises)
