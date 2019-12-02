@@ -24,6 +24,31 @@ Npm [debug](https://www.npmjs.com/package/debug) library is useful for developme
 
 If DEBUG variable is not provided during stat time, [bunyan](https://www.npmjs.com/package/bunyan-format) will help us to print log messages with default json format, very useful to integrate our messages in production to any big data tool.
 
+### Examples
+
+To view the examples, clone the repo and install the dependencies:
+
+```bash
+$ git clone git@github.com:aoropeza/collie-uses-cases.git
+$ cd collie-uses-cases
+$ npm install
+```
+
+Then run whichever example you want:
+
+```bash
+$ DEBUG=* DB_USER=xxx DB_PWD=xxx DB_HOST=xxx node example/index.js
+```
+
+## Tests
+
+To run the test suite, first install the dependencies, then run `npm test`:
+
+```bash
+$ npm install
+$ npm test
+```
+
 ### Usage
 
 ```js
