@@ -97,34 +97,40 @@ class DbLocationRepository extends Db {
       )
 
       const ModelLocation = this._model
-      return ModelLocation.aggregate([
+
+      const sortByLocation = (_longitude, _latitude) => [
         {
           $geoNear: {
-            near: { type: 'Point', coordinates: [longitude, latitude] },
+            near: { type: 'Point', coordinates: [_longitude, _latitude] },
             distanceField: 'dist_calculated',
             spherical: true
           }
-        },
+        }
+      ]
+
+      const populateBrands = [
         {
           $lookup: {
             from: 'brands',
-            let: { brandId: '$brand' }, // $brand comes from local(locations)
+            let: { brandId: '$brand' }, // $brand comes from local table
             as: 'brandInfo',
             pipeline: [
               {
                 $match: {
                   $expr: {
-                    $and: [{ $eq: ['$_id', '$$brandId'] }] // _id comes from foreign(brand)
+                    $and: [{ $eq: ['$_id', '$$brandId'] }] // _id comes from foreign table(brand)
                   }
                 }
-              },
-              { $project: { _id: 0, __v: 0, computedUnique: 0 } }
+              }
             ]
           }
         },
         {
           $unwind: '$brandInfo'
-        },
+        }
+      ]
+
+      const populateSchedules = [
         {
           $lookup: {
             from: 'schedules',
@@ -136,14 +142,6 @@ class DbLocationRepository extends Db {
                   $expr: {
                     $and: [{ $eq: ['$location', '$$locationId'] }]
                   }
-                }
-              },
-              {
-                $project: {
-                  _id: 0,
-                  __v: 0,
-                  computedUnique: 0,
-                  location: 0
                 }
               },
               {
@@ -162,7 +160,9 @@ class DbLocationRepository extends Db {
         },
         {
           $unwind: '$schedulesInfo'
-        },
+        }
+      ]
+      const populateMovies = [
         {
           $lookup: {
             from: 'movies',
@@ -173,17 +173,8 @@ class DbLocationRepository extends Db {
                 $match: {
                   $expr: {
                     // _id comes from foreign(movies)
-                    $and: [{ $eq: ['$_id', '$$movieId'] }].concat(
-                      movie ? { $eq: ['$name', movie] } : {}
-                    )
+                    $and: [{ $eq: ['$_id', '$$movieId'] }]
                   }
-                }
-              },
-              {
-                $project: {
-                  _id: 0,
-                  __v: 0,
-                  computedUnique: 0
                 }
               }
             ]
@@ -191,7 +182,9 @@ class DbLocationRepository extends Db {
         },
         {
           $unwind: '$schedulesInfo.movieInfo'
-        },
+        }
+      ]
+      const group = [
         {
           $group: {
             _id: {
@@ -202,22 +195,9 @@ class DbLocationRepository extends Db {
             },
             schedulesInfo: { $push: '$schedulesInfo' }
           }
-        },
-        {
-          $project: {
-            address: '$_id.address',
-            name: '$_id.name',
-            dist_calculated: '$_id.dist_calculated',
-            brandInfo: '$_id.brandInfo',
-            schedulesInfo: '$schedulesInfo'
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            'schedulesInfo.movie': 0
-          }
-        },
+        }
+      ]
+      const filter = [
         {
           $match: {
             'schedulesInfo.startTime': {
@@ -226,7 +206,62 @@ class DbLocationRepository extends Db {
             }
           }
         }
-      ])
+      ].concat(
+        movie
+          ? [
+              {
+                $match: {
+                  'schedulesInfo.movieInfo.name': {
+                    $eq: movie
+                  }
+                }
+              }
+            ]
+          : []
+      )
+      const project = [
+        {
+          $project: {
+            location: {
+              address: '$_id.address',
+              name: '$_id.name',
+              dist_calculated: '$_id.dist_calculated',
+              brand: '$_id.brandInfo',
+              schedules: '$schedulesInfo'
+            }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            'location.brand._id': 0,
+            'location.brand.computedUnique': 0,
+            'location.brand.__v': 0,
+            'location.schedules.movie': 0,
+            'location.schedules._id': 0,
+            'location.schedules.computedUnique': 0,
+            'location.schedules.__v': 0,
+            'location.schedules.location': 0,
+            'location.schedules.startTime': 0,
+            'location.schedules.movieInfo._id': 0,
+            'location.schedules.movieInfo.computedUnique': 0,
+            'location.schedules.movieInfo.__v': 0
+          }
+        }
+      ]
+
+      const agregate = []
+        .concat(sortByLocation(longitude, latitude))
+        .concat(populateBrands)
+        .concat(populateSchedules)
+        .concat(populateMovies)
+        .concat(group)
+        .concat(filter)
+        .concat(project)
+
+      logger.info(agregate)
+
+      return ModelLocation.aggregate(agregate)
     } catch (error) {
       logger.error(error)
       throw new Error(error)

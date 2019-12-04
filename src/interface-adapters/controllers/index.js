@@ -6,6 +6,7 @@ const { BulkLocations } = require('../../uses-cases')
 const { BulkMovies } = require('../../uses-cases')
 const { BulkSchedules } = require('../../uses-cases')
 const { FilterMoviesInfo } = require('../../uses-cases')
+const { FilterActiveMovies } = require('../../uses-cases')
 const { DbSourceRepository } = require('../implementations/DbSourceRepository')
 const { DbBrandRepository } = require('../implementations/DbBrandRepository')
 const {
@@ -116,6 +117,20 @@ class Controllers {
       latitude,
       longitude,
       dbLocationRepository
+    ).exec()
+
+    // Output
+  }
+
+  static async filterActiveMovies(date, timeOfDay, timeZone) {
+    // Input
+
+    // Treatment
+    return new FilterActiveMovies(
+      date,
+      timeOfDay,
+      timeZone,
+      dbMovieRepository
     ).exec()
 
     // Output

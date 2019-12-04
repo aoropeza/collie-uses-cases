@@ -1,3 +1,7 @@
+'use strict'
+
+const util = require('util')
+
 const moment = require('moment')
 
 const { UsesCases } = require('../src')
@@ -16,7 +20,7 @@ const config = {
   }
 }
 
-const start = async () => {
+const startInserts = async () => {
   try {
     const usesCases = await UsesCases.buildStatic(config)
     console.log('EXAMPLE: ----> Uses cases gotten correctly')
@@ -221,22 +225,23 @@ const start = async () => {
     process.exit(1)
   }
 }
-//start()
+//startInserts()
 
-const startSeach = async () => {
+const startSearchMoviesInfo = async () => {
   try {
     const usesCases = await UsesCases.buildStatic(config)
     console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
     const movies = await usesCases.filterMoviesInfo(
-      undefined,
+      'The current war',
       '2019-12-04',
       '12:00-17:59', //morning 00:00-11:59, evening 12:00-17:59, night 18:00-23:59
       'America/Mexico_City',
       19.4499759,
       -99.0704167
     )
-    console.error(JSON.stringify(movies))
+
+    console.log(util.inspect(movies, false, null, true /* enable colors */))
     process.exit(0)
   } catch (error) {
     console.log('EXAMPLE: ----> Error')
@@ -244,4 +249,25 @@ const startSeach = async () => {
     process.exit(1)
   }
 }
-startSeach()
+//startSearchMoviesInfo()
+
+const startSearchActiveMovies = async () => {
+  try {
+    const usesCases = await UsesCases.buildStatic(config)
+    console.log('EXAMPLE: ----> Uses cases gotten correctly')
+
+    const movies = await usesCases.filterActiveMovies(
+      '2019-12-04',
+      '12:00-17:59', //morning 00:00-11:59, evening 12:00-17:59, night 18:00-23:59
+      'America/Mexico_City'
+    )
+
+    console.log(util.inspect(movies, false, null, true /* enable colors */))
+    process.exit(0)
+  } catch (error) {
+    console.log('EXAMPLE: ----> Error')
+    console.error(error)
+    process.exit(1)
+  }
+}
+startSearchActiveMovies()

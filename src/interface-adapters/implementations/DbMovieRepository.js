@@ -2,8 +2,12 @@
 
 'use strict'
 
+const moment = require('moment-timezone')
 const mongoose = require('mongoose')
 
+const logger = require('../../frameworks-drivers/logger')(
+  'collie:uses-cases:DbMovieRepository'
+)
 const { Movie } = require('../../entities/models')
 const { Db } = require('../interfaces/Db')
 
@@ -50,6 +54,101 @@ class DbMovieRepository extends Db {
       },
       insertOrUpdate
     )
+  }
+
+  async findPopulate({ date, timeOfDay, timeZone }) {
+    try {
+      const times = timeOfDay.split('-')
+      const dateStart = moment.tz(
+        `${date} ${times[0]}`,
+        'YYYY-MM-DD HH:mm',
+        timeZone
+      )
+      const dateEnd = moment.tz(
+        `${date} ${times[1]}`,
+        'YYYY-MM-DD HH:mm',
+        timeZone
+      )
+
+      const ModelMovie = this._model
+
+      const populateSchedules = [
+        {
+          $lookup: {
+            from: 'schedules',
+            let: { movieId: '$_id' },
+            as: 'schedulesInfo',
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [{ $eq: ['$movie', '$$movieId'] }]
+                  }
+                }
+              },
+              {
+                $addFields: {
+                  startTimeZone: {
+                    $dateToString: {
+                      format: '%Y-%m-%d %H:%M',
+                      date: '$startTime',
+                      timezone: timeZone
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          $unwind: '$schedulesInfo'
+        }
+      ]
+      const filter = [
+        {
+          $match: {
+            'schedulesInfo.startTime': {
+              $gt: dateStart.utcOffset(0).toDate(),
+              $lt: dateEnd.utcOffset(0).toDate()
+            }
+          }
+        }
+      ]
+      const group = [
+        {
+          $group: {
+            _id: '$name'
+          }
+        }
+      ]
+      const project = [
+        {
+          $project: {
+            name: '$_id'
+          }
+        },
+        {
+          $project: {
+            _id: false
+          }
+        }
+      ]
+      const sort = [{ $sort: { name: 1 } }]
+
+      const agregate = []
+        .concat(populateSchedules)
+        .concat(filter)
+        .concat(group)
+        .concat(project)
+        .concat(sort)
+
+      logger.info(agregate)
+
+      return ModelMovie.aggregate(agregate)
+    } catch (error) {
+      logger.error(error)
+      throw new Error(error)
+    }
   }
 }
 

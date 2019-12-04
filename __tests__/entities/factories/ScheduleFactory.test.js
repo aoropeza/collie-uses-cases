@@ -8,9 +8,11 @@ describe('Validating BrandFactory properties', () => {
   test('Should generate computedUnique propertie', async () => {
     const entity = new ScheduleFactory(
       {
+        location: 'location',
         movie: 'movie',
         startTime: 'startTime',
-        duration: 'duration'
+        duration: 'duration',
+        typeRoom: 'lux'
       },
       {
         validate: () => {
@@ -24,6 +26,6 @@ describe('Validating BrandFactory properties', () => {
 
     const brand = await entity.createEntity()
 
-    expect(brand.computedUnique).toBe('moviestartTimeduration')
+    expect(brand.computedUnique).toBe('locationmoviestartTimedurationlux')
   })
 })
