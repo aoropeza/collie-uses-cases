@@ -225,7 +225,7 @@ const startInserts = async () => {
     process.exit(1)
   }
 }
-//startInserts()
+startInserts()
 
 const startSearchMoviesInfo = async () => {
   try {
@@ -249,7 +249,7 @@ const startSearchMoviesInfo = async () => {
     process.exit(1)
   }
 }
-//startSearchMoviesInfo()
+startSearchMoviesInfo()
 
 const startSearchActiveMovies = async () => {
   try {
