@@ -72,13 +72,9 @@ class Location {
         required: true,
         type: String
       },
-      latitude: {
-        required: true,
-        type: Number
-      },
-      longitude: {
-        required: true,
-        type: Number
+      geometry: {
+        type: { type: String },
+        coordinates: [Number]
       },
       address: {
         required: true,

@@ -23,6 +23,8 @@
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
     "debug": "^4.1.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "mongoose": "^5.7.12"
   },
   "devDependencies": {

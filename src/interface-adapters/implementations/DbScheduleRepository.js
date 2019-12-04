@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-
 'use strict'
 
 const mongoose = require('mongoose')
@@ -31,6 +29,11 @@ class DbScheduleRepository extends Db {
     const source = new ModelSchedule(properties)
 
     await source.validateSync()
+  }
+
+  async find(query) {
+    const ModelSchedule = this._model
+    return ModelSchedule.find(query)
   }
 
   async remove(query) {

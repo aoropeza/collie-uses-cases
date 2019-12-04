@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const { UsesCases } = require('../src')
 
 const config = {
@@ -54,22 +56,18 @@ const start = async () => {
       },
       [
         {
-          name: 'Plaza central',
-          latitude: 19.4574861,
-          longitude: 19.4574862,
-          address: 'Esquina calle norte 13 número 56'
+          name: 'Cinépolis - Plaza Telmex',
+          latitude: 19.449582,
+          longitude: -99.0723182,
+          address:
+            'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
         },
         {
-          name: 'Plaza sur',
-          latitude: 19.4574862,
-          longitude: 19.4574862,
-          address: 'Esquina calle sur 33 número 34'
-        },
-        {
-          name: 'Plaza oriente',
-          latitude: 19.4574844,
-          longitude: 19.457444,
-          address: 'Esquina calle oriente 66 número 34'
+          name: 'Cinépolis - Forum Buenavista',
+          latitude: 19.4512236,
+          longitude: -99.1534301,
+          address:
+            'Av. Insurgentes Nte. 259, Buenavista, Cuauhtémoc, 06350 Hervidero y Plancha, CDMX'
         }
       ]
     )
@@ -81,10 +79,11 @@ const start = async () => {
       },
       [
         {
-          name: 'Plaza oriente',
-          latitude: 19.4574844,
-          longitude: 19.457444,
-          address: 'Esquina calle oriente 66 número 34'
+          name: 'Cinemex - Parque Lindavista',
+          latitude: 19.4864927,
+          longitude: -99.134044,
+          address:
+            'Colector 13 No. 280, Magdalena de las Salinas, Gustavo A. Madero, 07760 Ciudad de México, CDMX'
         }
       ]
     )
@@ -104,15 +103,17 @@ const start = async () => {
         logo: 'https://www.cinemex.com/logo2.png'
       },
       {
-        name: 'Plaza oriente',
-        latitude: 19.4574844,
-        longitude: 19.457444,
-        address: 'Esquina calle oriente 66 número 34'
+        name: 'Cinemex - Parque Lindavista',
+        latitude: 19.4864927,
+        longitude: -99.134044,
+        address:
+          'Colector 13 No. 280, Magdalena de las Salinas, Gustavo A. Madero, 07760 Ciudad de México, CDMX'
       },
       { name: 'Terminator' },
       [
         {
-          startTime: new Date(),
+          // Mexico to gmt
+          startTime: moment('2019-12-04 10:00', 'YYYY-MM-DD h:mm').utcOffset(0),
           duration: 60,
           typeRoom: 'lux'
         }
@@ -125,15 +126,86 @@ const start = async () => {
         logo: 'https://www.cinepolis.com/logo2.png'
       },
       {
-        name: 'Plaza oriente',
-        latitude: 19.4574844,
-        longitude: 19.457444,
-        address: 'Esquina calle oriente 66 número 34'
+        name: 'Cinépolis - Forum Buenavista',
+        latitude: 19.4512236,
+        longitude: -99.1534301,
+        address:
+          'Av. Insurgentes Nte. 259, Buenavista, Cuauhtémoc, 06350 Hervidero y Plancha, CDMX'
       },
       { name: 'The current war' },
       [
         {
-          startTime: new Date(),
+          // Mexico to gmt
+          startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
+          duration: 120,
+          typeRoom: 'kids'
+        }
+      ]
+    )
+
+    await usesCases.bulkSchedules(
+      {
+        name: 'Cinepolis',
+        logo: 'https://www.cinepolis.com/logo2.png'
+      },
+      {
+        name: 'Cinépolis - Plaza Telmex',
+        latitude: 19.449582,
+        longitude: -99.0723182,
+        address:
+          'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
+      },
+      { name: 'The current war' },
+      [
+        {
+          // Mexico to gmt
+          startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
+          duration: 120,
+          typeRoom: 'kids'
+        }
+      ]
+    )
+
+    await usesCases.bulkSchedules(
+      {
+        name: 'Cinepolis',
+        logo: 'https://www.cinepolis.com/logo2.png'
+      },
+      {
+        name: 'Cinépolis - Plaza Telmex',
+        latitude: 19.449582,
+        longitude: -99.0723182,
+        address:
+          'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
+      },
+      { name: 'Terminator' },
+      [
+        {
+          // Mexico to gmt
+          startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
+          duration: 120,
+          typeRoom: 'kids'
+        }
+      ]
+    )
+
+    await usesCases.bulkSchedules(
+      {
+        name: 'Cinepolis',
+        logo: 'https://www.cinepolis.com/logo2.png'
+      },
+      {
+        name: 'Cinépolis - Plaza Telmex',
+        latitude: 19.449582,
+        longitude: -99.0723182,
+        address:
+          'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
+      },
+      { name: 'The current war' },
+      [
+        {
+          // Mexico to gmt
+          startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
           duration: 120,
           typeRoom: 'kids'
         }
@@ -149,4 +221,27 @@ const start = async () => {
     process.exit(1)
   }
 }
-start()
+//start()
+
+const startSeach = async () => {
+  try {
+    const usesCases = await UsesCases.buildStatic(config)
+    console.log('EXAMPLE: ----> Uses cases gotten correctly')
+
+    const movies = await usesCases.filterMoviesInfo(
+      undefined,
+      '2019-12-04',
+      '12:00-17:59', //morning 00:00-11:59, evening 12:00-17:59, night 18:00-23:59
+      'America/Mexico_City',
+      19.4499759,
+      -99.0704167
+    )
+    console.error(JSON.stringify(movies))
+    process.exit(0)
+  } catch (error) {
+    console.log('EXAMPLE: ----> Error')
+    console.error(error)
+    process.exit(1)
+  }
+}
+startSeach()

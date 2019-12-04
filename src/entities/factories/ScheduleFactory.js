@@ -10,7 +10,7 @@ class ScheduleFactory extends BaseFactory {
       {
         ...properties,
         computedUnique: md5Repository.exec(
-          `${properties.movie}${properties.startTime}${properties.duration}`
+          `${properties.location}${properties.movie}${properties.startTime}${properties.duration}${properties.typeRoom}`
         )
       },
       validator

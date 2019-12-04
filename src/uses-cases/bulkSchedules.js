@@ -97,6 +97,9 @@ class BulkSchedules {
             }
           },
           {
+            location: newUpdatedLocation._id
+          },
+          {
             movie: newUpdatedMovie._id
           }
         ]

@@ -9,6 +9,8 @@ class Db {
 
   async find(query) {}
 
+  async findPopulate(params) {}
+
   async remove(query) {}
 
   async insertOrUpdate(ids, properties) {}
