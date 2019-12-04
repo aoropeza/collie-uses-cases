@@ -166,7 +166,7 @@ class DbLocationRepository extends Db {
         {
           $lookup: {
             from: 'movies',
-            let: { movieId: '$schedulesInfo.movie' }, // $brand comes from local(locations)
+            let: { movieId: '$schedulesInfo.movie' },
             as: 'schedulesInfo.movieInfo',
             pipeline: [
               {
