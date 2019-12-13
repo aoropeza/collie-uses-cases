@@ -2,7 +2,7 @@
   "name": "collie-uses-cases",
   "version": "0.0.1",
   "description": "Uses cases and entities layers for collie.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "format": "prettier --write \"**/*.{js,json,md,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,json,md,yaml}\"",
