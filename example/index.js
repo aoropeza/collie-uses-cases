@@ -233,7 +233,7 @@ const startSearchMoviesInfo = async () => {
     console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
     const movies = await usesCases.filterLocationsByMovie(
-      'The current war',
+      'Terminator',
       '2019-12-04',
       '12:00-17:59', //morning 00:00-11:59, evening 12:00-17:59, night 18:00-23:59
       'America/Mexico_City',

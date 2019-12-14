@@ -173,7 +173,10 @@ class DbLocationRepository extends Db {
                 $match: {
                   $expr: {
                     // _id comes from foreign(movies)
-                    $and: [{ $eq: ['$_id', '$$movieId'] }]
+                    $and: [
+                      { $eq: ['$_id', '$$movieId'] },
+                      { $eq: ['$name', movie] }
+                    ]
                   }
                 }
               }
@@ -206,19 +209,7 @@ class DbLocationRepository extends Db {
             }
           }
         }
-      ].concat(
-        movie
-          ? [
-              {
-                $match: {
-                  'schedulesInfo.movieInfo.name': {
-                    $eq: movie
-                  }
-                }
-              }
-            ]
-          : []
-      )
+      ]
       const project = [
         {
           $project: {
