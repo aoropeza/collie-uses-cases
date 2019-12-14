@@ -222,30 +222,28 @@ class DbLocationRepository extends Db {
       const project = [
         {
           $project: {
-            location: {
-              address: '$_id.address',
-              name: '$_id.name',
-              dist_calculated: '$_id.dist_calculated',
-              brand: '$_id.brandInfo',
-              schedules: '$schedulesInfo'
-            }
+            address: '$_id.address',
+            name: '$_id.name',
+            dist_calculated: '$_id.dist_calculated',
+            brand: '$_id.brandInfo',
+            schedules: '$schedulesInfo'
           }
         },
         {
           $project: {
             _id: 0,
-            'location.brand._id': 0,
-            'location.brand.computedUnique': 0,
-            'location.brand.__v': 0,
-            'location.schedules.movie': 0,
-            'location.schedules._id': 0,
-            'location.schedules.computedUnique': 0,
-            'location.schedules.__v': 0,
-            'location.schedules.location': 0,
-            'location.schedules.startTime': 0,
-            'location.schedules.movieInfo._id': 0,
-            'location.schedules.movieInfo.computedUnique': 0,
-            'location.schedules.movieInfo.__v': 0
+            'brand._id': 0,
+            'brand.computedUnique': 0,
+            'brand.__v': 0,
+            'schedules.movie': 0,
+            'schedules._id': 0,
+            'schedules.computedUnique': 0,
+            'schedules.__v': 0,
+            'schedules.location': 0,
+            'schedules.startTime': 0,
+            'schedules.movieInfo._id': 0,
+            'schedules.movieInfo.computedUnique': 0,
+            'schedules.movieInfo.__v': 0
           }
         }
       ]
