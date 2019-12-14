@@ -1,7 +1,7 @@
 {
   "name": "collie-uses-cases",
   "version": "0.0.1",
-  "description": "Uses cases and entities layers for collie.",
+  "description": "Uses cases and entities layers for collie project.",
   "main": "src/index.js",
   "scripts": {
     "format": "prettier --write \"**/*.{js,json,md,yaml}\"",
