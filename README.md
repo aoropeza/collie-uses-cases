@@ -24,6 +24,14 @@ Npm [debug](https://www.npmjs.com/package/debug) library is useful for developme
 
 If DEBUG variable is not provided during stat time, [bunyan](https://www.npmjs.com/package/bunyan-format) will help us to print log messages with default json format, very useful to integrate our messages in production to any big data tool.
 
+### Setup
+
+In order you can run queries related to locations and sort them, you have to run the nex command in you mongo db.
+
+```bash
+db.getCollection('locations').createIndex( { "geometry" : "2dsphere" } )
+```
+
 ### Examples
 
 To view the examples, clone the repo and install the dependencies:
