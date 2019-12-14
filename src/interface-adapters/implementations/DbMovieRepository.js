@@ -135,16 +135,16 @@ class DbMovieRepository extends Db {
       ]
       const sort = [{ $sort: { name: 1 } }]
 
-      const agregate = []
+      const aggregate = []
         .concat(populateSchedules)
         .concat(filter)
         .concat(group)
         .concat(project)
         .concat(sort)
 
-      logger.info(agregate)
+      logger.info(aggregate)
 
-      return ModelMovie.aggregate(agregate)
+      return ModelMovie.aggregate(aggregate)
     } catch (error) {
       logger.error(error)
       throw new Error(error)

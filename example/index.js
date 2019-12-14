@@ -9,7 +9,7 @@ const { UsesCases } = require('../src')
 const config = {
   uriConnection: {
     protocol: `mongodb+srv`,
-    database: `movies`,
+    database: `movies-dev`,
     user: process.env.DB_USER,
     password: process.env.DB_PWD,
     host: process.env.DB_HOST,

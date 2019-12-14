@@ -239,7 +239,7 @@ class DbLocationRepository extends Db {
         }
       ]
 
-      const agregate = []
+      const aggregate = []
         .concat(sortByLocation(longitude, latitude))
         .concat(populateBrands)
         .concat(populateSchedules)
@@ -248,9 +248,9 @@ class DbLocationRepository extends Db {
         .concat(filter)
         .concat(project)
 
-      logger.info(agregate)
+      logger.info(aggregate)
 
-      return ModelLocation.aggregate(agregate)
+      return ModelLocation.aggregate(aggregate)
     } catch (error) {
       logger.error(error)
       throw new Error(error)
