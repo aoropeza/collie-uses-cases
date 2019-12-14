@@ -5,7 +5,7 @@ const { BulkBrands } = require('../../uses-cases')
 const { BulkLocations } = require('../../uses-cases')
 const { BulkMovies } = require('../../uses-cases')
 const { BulkSchedules } = require('../../uses-cases')
-const { FilterMoviesInfo } = require('../../uses-cases')
+const { FilterLocationsByMovie } = require('../../uses-cases')
 const { FilterActiveMovies } = require('../../uses-cases')
 const { DbSourceRepository } = require('../implementations/DbSourceRepository')
 const { DbBrandRepository } = require('../implementations/DbBrandRepository')
@@ -98,7 +98,7 @@ class Controllers {
     // Output
   }
 
-  static async filterMoviesInfo(
+  static async filterLocationsByMovie(
     movie,
     date,
     timeOfDay,
@@ -109,7 +109,7 @@ class Controllers {
     // Input
 
     // Treatment
-    return new FilterMoviesInfo(
+    return new FilterLocationsByMovie(
       movie,
       date,
       timeOfDay,

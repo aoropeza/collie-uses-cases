@@ -3,10 +3,10 @@
 'use strict'
 
 const logger = require('../frameworks-drivers/logger')(
-  'collie:uses-cases:FilterMoviesInfo'
+  'collie:uses-cases:FilterLocationsByMovie'
 )
 
-class FilterMoviesInfo {
+class FilterLocationsByMovie {
   constructor(
     movie,
     date,
@@ -47,4 +47,4 @@ class FilterMoviesInfo {
   }
 }
 
-module.exports = { FilterMoviesInfo }
+module.exports = { FilterLocationsByMovie }

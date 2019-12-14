@@ -225,14 +225,14 @@ const startInserts = async () => {
     process.exit(1)
   }
 }
-startInserts()
+//startInserts()
 
 const startSearchMoviesInfo = async () => {
   try {
     const usesCases = await UsesCases.buildStatic(config)
     console.log('EXAMPLE: ----> Uses cases gotten correctly')
 
-    const movies = await usesCases.filterMoviesInfo(
+    const movies = await usesCases.filterLocationsByMovie(
       'The current war',
       '2019-12-04',
       '12:00-17:59', //morning 00:00-11:59, evening 12:00-17:59, night 18:00-23:59
@@ -270,4 +270,4 @@ const startSearchActiveMovies = async () => {
     process.exit(1)
   }
 }
-startSearchActiveMovies()
+//startSearchActiveMovies()

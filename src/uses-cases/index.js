@@ -5,7 +5,7 @@ const { BulkBrands } = require('./BulkBrands')
 const { BulkLocations } = require('./BulkLocations')
 const { BulkMovies } = require('./BulkMovies')
 const { BulkSchedules } = require('./BulkSchedules')
-const { FilterMoviesInfo } = require('./FilterMoviesInfo')
+const { FilterLocationsByMovie } = require('./FilterLocationsByMovie')
 const { FilterActiveMovies } = require('./FilterActiveMovies')
 
 module.exports = {
@@ -14,6 +14,6 @@ module.exports = {
   BulkLocations,
   BulkMovies,
   BulkSchedules,
-  FilterMoviesInfo,
+  FilterLocationsByMovie,
   FilterActiveMovies
 }
