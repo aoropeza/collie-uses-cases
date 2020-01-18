@@ -118,7 +118,7 @@ const startInserts = async () => {
         {
           // Mexico to gmt
           startTime: moment('2019-12-04 10:00', 'YYYY-MM-DD h:mm').utcOffset(0),
-          duration: 60,
+          duration: '60',
           typeRoom: 'lux'
         }
       ]
@@ -141,7 +141,7 @@ const startInserts = async () => {
         {
           // Mexico to gmt
           startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
-          duration: 120,
+          duration: '120',
           typeRoom: 'kids'
         }
       ]
@@ -164,7 +164,7 @@ const startInserts = async () => {
         {
           // Mexico to gmt
           startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
-          duration: 120,
+          duration: '120',
           typeRoom: 'kids'
         }
       ]
@@ -187,7 +187,7 @@ const startInserts = async () => {
         {
           // Mexico to gmt
           startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
-          duration: 120,
+          duration: '120',
           typeRoom: 'kids'
         }
       ]
@@ -210,7 +210,7 @@ const startInserts = async () => {
         {
           // Mexico to gmt
           startTime: moment('2019-12-04 16:00', 'YYYY-MM-DD h:mm').utcOffset(0),
-          duration: 120,
+          duration: '120',
           typeRoom: 'kids'
         }
       ]
