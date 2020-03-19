@@ -85,7 +85,7 @@ class Schedule {
       },
       duration: {
         required: true,
-        type: Number
+        type: String
       },
       typeRoom: {
         required: true,
