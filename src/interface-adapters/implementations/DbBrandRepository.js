@@ -25,7 +25,7 @@ class DbBrandRepository extends Db {
     const ModelBrand = this._model
     const source = new ModelBrand(properties)
 
-    await source.validateSync()
+    return source.validateSync()
   }
 
   async find(query) {

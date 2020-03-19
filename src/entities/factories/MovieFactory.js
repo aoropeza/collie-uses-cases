@@ -16,7 +16,7 @@ class MovieFactory extends BaseFactory {
   }
 
   async createEntity() {
-    super.validateEntity(Movie.schema, Movie.persistName)
+    await super.validateEntity(Movie.schema, Movie.persistName)
     return new Movie(this._properties)
   }
 }

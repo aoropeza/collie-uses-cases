@@ -42,7 +42,7 @@ class DbLocationRepository extends Db {
       computedUnique: properties.computedUnique
     })
 
-    await source.validateSync()
+    return source.validateSync()
   }
 
   async find(query) {

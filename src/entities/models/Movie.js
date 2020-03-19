@@ -1,13 +1,18 @@
 'use strict'
 
 class Movie {
-  constructor({ name, computedUnique }) {
+  constructor({ name, cover, computedUnique }) {
     this._name = name
+    this._cover = cover
     this._computedUnique = computedUnique
   }
 
   get name() {
     return this._name
+  }
+
+  get cover() {
+    return this._cover
   }
 
   get computedUnique() {
@@ -22,6 +27,10 @@ class Movie {
     this._name = value
   }
 
+  set cover(value) {
+    this._cover = value
+  }
+
   set computedUnique(value) {
     this._computedUnique = value
   }
@@ -29,7 +38,11 @@ class Movie {
   static get schema() {
     return {
       name: {
-        require: true,
+        required: true,
+        type: String
+      },
+      cover: {
+        required: true,
         type: String
       },
       computedUnique: {

@@ -28,7 +28,7 @@ class DbScheduleRepository extends Db {
     const ModelSchedule = this._model
     const source = new ModelSchedule(properties)
 
-    await source.validateSync()
+    return source.validateSync()
   }
 
   async find(query) {

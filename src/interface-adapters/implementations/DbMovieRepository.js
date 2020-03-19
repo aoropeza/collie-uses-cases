@@ -29,7 +29,7 @@ class DbMovieRepository extends Db {
     const ModelMovie = this._model
     const source = new ModelMovie(properties)
 
-    await source.validateSync()
+    return source.validateSync()
   }
 
   async find(query) {
@@ -50,7 +50,8 @@ class DbMovieRepository extends Db {
       },
       {
         name: entity.name,
-        computedUnique: entity.computedUnique
+        computedUnique: entity.computedUnique,
+        cover: entity.cover
       },
       insertOrUpdate
     )
@@ -117,14 +118,20 @@ class DbMovieRepository extends Db {
       const group = [
         {
           $group: {
-            _id: '$name'
+            _id: {
+              name: '$name',
+              computedUnique: '$computedUnique',
+              cover: '$cover'
+            }
           }
         }
       ]
       const project = [
         {
           $project: {
-            name: '$_id'
+            name: '$_id.name',
+            cover: '$_id.cover',
+            id: '$_id.computedUnique'
           }
         },
         {

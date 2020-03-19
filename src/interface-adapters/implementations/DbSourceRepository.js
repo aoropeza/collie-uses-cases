@@ -18,7 +18,7 @@ class DbSourceRepository extends Db {
     const ModelSource = this._model
     const source = new ModelSource(properties)
 
-    await source.validateSync()
+    return source.validateSync()
   }
 
   async save(entity) {

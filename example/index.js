@@ -94,10 +94,12 @@ const startInserts = async () => {
 
     await usesCases.bulkMovies([
       {
-        name: 'Terminator'
+        name: 'Terminator',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
       },
       {
-        name: 'The current war'
+        name: 'The current war',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
       }
     ])
 
@@ -113,7 +115,10 @@ const startInserts = async () => {
         address:
           'Colector 13 No. 280, Magdalena de las Salinas, Gustavo A. Madero, 07760 Ciudad de México, CDMX'
       },
-      { name: 'Terminator' },
+      {
+        name: 'Terminator',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
+      },
       [
         {
           // Mexico to gmt
@@ -136,7 +141,10 @@ const startInserts = async () => {
         address:
           'Av. Insurgentes Nte. 259, Buenavista, Cuauhtémoc, 06350 Hervidero y Plancha, CDMX'
       },
-      { name: 'The current war' },
+      {
+        name: 'The current war',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
+      },
       [
         {
           // Mexico to gmt
@@ -159,7 +167,10 @@ const startInserts = async () => {
         address:
           'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
       },
-      { name: 'The current war' },
+      {
+        name: 'The current war',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
+      },
       [
         {
           // Mexico to gmt
@@ -182,7 +193,10 @@ const startInserts = async () => {
         address:
           'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
       },
-      { name: 'Terminator' },
+      {
+        name: 'Terminator',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
+      },
       [
         {
           // Mexico to gmt
@@ -205,7 +219,10 @@ const startInserts = async () => {
         address:
           'Avenida Bordo de Xochiaca, Av. Ciudad Jdn. 3, Bicentenario, 57205 Nezahualcóyotl, Méx'
       },
-      { name: 'The current war' },
+      {
+        name: 'The current war',
+        cover: 'https://static.cinepolis.com/img/peliculas/34490/1/1/34490.jpg'
+      },
       [
         {
           // Mexico to gmt
