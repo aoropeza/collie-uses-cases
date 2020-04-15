@@ -194,7 +194,8 @@ class DbLocationRepository extends Db {
               address: '$address',
               name: '$name',
               dist_calculated: '$dist_calculated',
-              brandInfo: '$brandInfo'
+              brandInfo: '$brandInfo',
+              computedUnique: '$computedUnique'
             },
             schedulesInfo: { $push: '$schedulesInfo' }
           }
@@ -216,6 +217,7 @@ class DbLocationRepository extends Db {
             address: '$_id.address',
             name: '$_id.name',
             dist_calculated: '$_id.dist_calculated',
+            computedUnique: '$_id.computedUnique',
             brand: '$_id.brandInfo',
             schedules: '$schedulesInfo'
           }

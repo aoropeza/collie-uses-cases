@@ -1,6 +1,6 @@
 {
   "name": "collie-uses-cases",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Uses cases and entities layers for collie project.",
   "main": "src/index.js",
   "scripts": {
